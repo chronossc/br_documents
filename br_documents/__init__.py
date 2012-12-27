@@ -2,9 +2,14 @@
 
 from __future__ import (absolute_import, division, unicode_literals)
 
-import re
-import math
-
+try:
+    basestring
+except NameError:
+    # Python 3
+    # basestring = str
+    # long = int
+    basestring = str
+    long = int
 
 class InvalidCPF(ValueError):
     pass
@@ -57,7 +62,7 @@ class CPF(object):
         if isinstance(cpf,(list, tuple, basestring)):
             self.cpf = ''.join([str(x) for x in cpf if x not in ('-', '.')])
         elif isinstance(cpf, (int, long)):
-            self.cpf = unicode(int(cpf))
+            self.cpf = str(int(cpf))
 
         if not self.cpf.isdigit():
             raise InvalidCPF(self.error_messages['only_digits'])
@@ -66,7 +71,7 @@ class CPF(object):
             raise InvalidCPF(self.error_messages['max_digits'])
 
         # turn into a list of integers for validation
-        self.cpf = map(int, self.cpf)
+        self.cpf = list(map(int, self.cpf))
 
         if not self.is_valid:
             raise InvalidCPF(self.error_messages['invalid_cpf'])
@@ -79,7 +84,7 @@ class CPF(object):
 
         # by calculation, cpfs with same number in all size is valid, but it
         # isnt :)
-        invalid_cpfs = map(lambda x: str(x)*11, range(0,10))
+        invalid_cpfs = list(map(lambda x: str(x)*11, range(0,10)))
 
         if str(self.cpf) in invalid_cpfs:
             raise InvalidCPF(self.error_messages['invalid_cpf'])
@@ -88,9 +93,13 @@ class CPF(object):
 
         # lets create verification digits, exactly like
         # http://www.python.org.br/wiki/VerificadorDeCpf @line 125 does
+
+
         while len(cpf) < 11:
             r = sum(
-                    map(lambda (i, v): (len(cpf) + 1 - i) * v, enumerate(cpf))
+                    # in python3, map give us a mapobject
+                    list(map(lambda x: (len(cpf) + 1 - x[0]) * x[1],
+                                                                enumerate(cpf)))
                 ) % 11
 
             if r > 1:
@@ -106,7 +115,7 @@ class CPF(object):
         return "<CPF: %s>" % self.__str__()
 
     def __unicode__(self):
-        return ''.join(map(str,self.cpf))
+        return ''.join(list(map(str,self.cpf)))
 
     def __str__(self):
         return self.__unicode__()
