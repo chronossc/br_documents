@@ -2,6 +2,8 @@
 
 from __future__ import (absolute_import, division, unicode_literals)
 
+import random
+
 try:
     basestring
 except NameError:
@@ -141,6 +143,37 @@ class CPF(object):
     def formated(self):
         cpf = self.__str__()
         return ''.join([cpf[:3], '.', cpf[3:6], '.', cpf[6:9], '-', cpf[9:]])
+
+
+def CPFGenerator():
+    """
+    returns a Valid CPF, based on http://www.python.org.br/wiki/GeradorDeCpf
+
+    >>> cpf = CPFGenerator()
+    >>> len(cpf) == 11
+    True
+    >>> CPF(cpf).is_valid
+    True
+
+    """
+
+    ns = [random.randrange(10) for i in range(9)]
+    ns.reverse()
+
+    digits = list(map(lambda n: n[0] * n[1], enumerate(ns,2)))
+    vd1 = 11 - round(sum(digits) % 11)
+    if vd1 >= 10:
+        vd1 = 0
+
+    digits = list(map(lambda n: n[0] * n[1], enumerate([vd1]+ns,2)))
+    vd2 = 11 - round(sum(digits) % 11)
+    if vd2 >= 10:
+        vd2 = 0
+
+    ns.reverse()
+
+    return str(CPF(list(map(int,ns+[vd1,vd2]))))
+
 
 
 if __name__ == "__main__":
