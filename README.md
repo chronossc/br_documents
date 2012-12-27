@@ -1,10 +1,10 @@
 br_documents
 ============
 
-Provide objects for brazilian documents like RG, CPF, CNPJ and others, with validation
+Provide objects for brazilian documents like CPF, CNPJ and others, with validation
 
 CPF
-===
+=
 
 Represents a CPF. Raises a InvalidCPF error when it is invalid.
 
@@ -21,5 +21,14 @@ Represents a CPF. Raises a InvalidCPF error when it is invalid.
 	(True, True)
 	>>> c.formated == '290.571.393-32'
 	True
+
+CPFGenerator
+=
+
+A method to create CPFs.
+
+    >>> import br_documents
+    >>> br_documents.CPFGenerator()
+    08001268152
 
 
