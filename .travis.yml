@@ -1,0 +1,19 @@
+language: python
+python:
+  - "2.5"
+  - "2.6"
+  - "2.7"
+  - "3.2"
+  - "3.3"
+install:
+script:
+  - python br_documents/__init__.py
+notifications:
+  email:
+    recipients:
+      - philipe.rp@gmail.com
+    on_success: change
+    on_failure: change
+branches:
+  only:
+    - master
