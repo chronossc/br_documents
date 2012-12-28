@@ -2,6 +2,8 @@
 
 from __future__ import (absolute_import, division, unicode_literals)
 
+__version__ = '0.0.1-p1'
+
 import random
 
 try:
