@@ -61,7 +61,9 @@ class CPF(object):
 
         # is better handle all stuff as string, because we have CPFs starting
         # with zeros at left
-        if isinstance(cpf,(list, tuple, basestring)):
+        if isinstance(cpf, CPF):
+            self.cpf = str(cpf)  # in case something send a CPF instance as value
+        elif isinstance(cpf,(list, tuple, basestring)):
             self.cpf = ''.join([str(x) for x in cpf if x not in ('-', '.')])
         elif isinstance(cpf, (int, long)):
             self.cpf = str(int(cpf))
